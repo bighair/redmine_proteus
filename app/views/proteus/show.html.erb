@@ -1,0 +1,144 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'proteus', :plugin => 'redmine_proteus' %>
+<% end %>
+
+<% if active_status(@proteus.proteus_status.description) %>
+  <div class="contextual">
+    <%= link_to 'Update', {:controller => 'proteus', :action => 'edit', :id => @proteus }, :onclick => 'showAndScrollTo("update"); return false;', :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
+    <%= link_to 'Delete', {:controller => 'proteus', :action => 'destroy', :id => @proteus}, :confirm => 'Are you sure you want to delete the selected change request?', :method => :delete, :class => 'icon icon-del' %>
+  </div>
+<% end %>
+
+<h2>Change #<%= @proteus.id %></h2>
+<div class="change_details">
+  <div class="subject">
+    <h3><%= @proteus.summary %></h3>
+  </div>
+
+  <div class="halign" id="proteus_request_basics">
+    <table class="proteus_basics">
+      <caption>Request Basics</caption>
+      <tbody>
+        <tr>
+          <th class="change_owner">Owner:</th><td class="change_owner"><%= link_to_user(@proteus.change_owner) %></td>
+        </tr>
+        <tr>
+          <th class="status">Status:</th><td class="status"><%= @proteus.proteus_status.description %></td>
+        </tr>
+        <tr>
+          <th class="priority">Priority:</th><td class="priority"><%= @proteus.proteus_priority.description %></td>
+        </tr>
+        <tr>
+          <th class="submitted_date">Submitted:</th><td class="submitted_date"><%= format_date(@proteus.submission_date) %></td>
+        </tr>
+        <tr>
+          <th class="predicted_start">Expected Start:</th><td class="predicted_start"><%= format_date(@proteus.predicted_start_date) %> <%= format_time(@proteus.predicted_start_time, false) %></td>
+        </tr>
+        <tr>
+          <th class="predicted_finish">Expected Finish:</th><td class="predicted_finish"><%= format_date(@proteus.predicted_finish_date) %> <%= format_time(@proteus.predicted_finish_time, false) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="halign" id="proteus_review_basics">
+    <table class="proteus_basics">
+      <caption>Review Basics</caption>
+      <tbody>
+        <tr>
+          <th class="decision_owner">Review Lead:</th><td class="decision_owner"><%= link_to_user(@proteus.decision_owner) %></td>
+        </tr>
+        <tr>
+          <th class="accepted_date">Accepted:</th><td class="accepted_date"><%= format_date(@proteus.accepted_date) %></td>
+        </tr>
+        <tr>
+          <th class="rejected_date">Rejected:</th><td class="rejected_date"><%= format_date(@proteus.rejected_date) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="halign" id="proteus_change_basics">
+    <table class="proteus_basics">
+      <caption>Change Basics</caption>
+      <tbody>
+        <tr>
+          <th class="success_date">Successful:</th><td class="success_date"><%= format_date(@proteus.success_date) %></td>
+        </tr>
+        <tr>
+          <th class="failure_date">Failed:</th><td class="failure_date"><%= format_date(@proteus.failure_date) %></td>
+        </tr>
+        <tr>
+          <th class="actual_start">Actual Start:</th><td class="actual_start"><%= format_date(@proteus.actual_start_date) %> <%= format_time(@proteus.actual_start_time, false) %></td>
+        </tr>
+        <tr>
+          <th class="actual_finish">Actual Finish:</th><td class="actual_finish"><%= format_date(@proteus.actual_finish_date) %> <%= format_time(@proteus.actual_finish_time, false) %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr/>
+
+  <p><strong>Specifics</strong></p>
+  <table class="proteus_specifics">
+    <tbody>
+      <tr>
+        <th class="servers_affected">Servers Affected:</th><td class="servers_affected"><%= @proteus.servers_affected %></td>
+      </tr>
+      <tr>
+        <th class="services_affected">Services Affected:</th><td class="services_affected"><%= @proteus.services_affected %></td>
+      </tr>
+      <tr>
+        <th class="ticket_references">Ticket References:</th><td class="ticket_references"><%= @proteus.ticket_references %></td>
+      </tr>
+      <tr>
+        <th class="who">Who's Required:</th><td class="who"><%= @proteus.resources.map.join(", ") %></td>
+      </tr>
+      <tr>
+        <th class="review_team">Review Team:</th><td class="review_team"><%= @proteus.reviewers.map.join(", ") %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr/>
+  
+  <p><strong>Detail</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :detail %>
+  </div>
+  <p><strong>Risks</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :risks %>
+  </div>
+  <p><strong>Backout Strategy</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :backout_strategy %>
+  </div>
+  <p><strong>Reversion Procedure</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :reversion_procedure %>
+  </div>
+  <p><strong>Review Notes</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :review_notes %>
+  </div>
+  <p><strong>Completion Notes</strong></p>
+  <div class="wiki">
+    <%= textilizable @proteus, :completion_notes %>
+  </div>
+</div>
+
+<% if active_status(@proteus.proteus_status.description) %>
+  <div class="contextual">
+    <%= link_to 'Update', {:controller => 'proteus', :action => 'edit', :id => @proteus }, :onclick => 'showAndScrollTo("update"); return false;', :class => 'icon icon-edit', :accesskey => accesskey(:edit) %>
+    <%= link_to 'Delete', {:controller => 'proteus', :action => 'destroy', :id => @proteus}, :confirm => 'Are you sure you want to delete the selected change request?', :method => :delete, :class => 'icon icon-del' %>
+  </div>
+<% end %>
+
+<% if authorize_for('proteus','edit') %>
+  <div id="update" style="display:none;">
+  <h3>Update Change Request</h3>
+  <%= render :partial => 'edit' %>
+  </div>
+<% end %>

@@ -1,0 +1,28 @@
+# English strings go here for Rails i18n
+en:
+  project_module_proteus_module: Change Control
+
+  permission_index_proteus: View Changes List
+  permission_new_proteus: Create a New Change
+  permission_show_proteus: View a Selected Change
+  permission_edit_proteus: Edit a Selected Change
+  permission_delete_proteus: Delete a Selected Change
+
+  field_submission_date: Submission Date
+  field_proteus_status: Status
+  field_change_owner: Change Owner
+  field_proteus_priority: Priority
+  field_detail: Detail
+  field_services_affected: Services Affected
+  field_risks: Risks
+  field_backout_strategy: Backout Strategy
+  field_reversion_procedure: Reversion Procedure
+  field_predicted_start_date: Expected Start
+  field_predicted_finish_date: Expected Finish
+  field_servers_affected: Servers Affected
+  field_ticket_references: Ticket References
+  field_decision_owner: Review Leader
+  field_review_notes: Review Notes
+  field_actual_start_date: Actual Start
+  field_actual_finish_date: Actual Finish
+  field_completion_notes: Completion Notes

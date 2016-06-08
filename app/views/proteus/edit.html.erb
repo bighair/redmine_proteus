@@ -1,0 +1,18 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'proteus', :plugin => 'redmine_proteus' %>
+<% end %>
+
+<h2>Edit Change Request</h2>
+
+<% labelled_tabular_form_for :proteus, @proteus,
+                             :url => {:action => 'update', :id => @proteus},
+                             :html => {:id => 'proteus-form',
+                                       :class => 'tabular proteus-form',
+                                       :method => :put,
+                                       :multipart => true} do |f| %>
+
+    <%= render :partial => 'proteus/form', :locals => {:f => f} %>
+  
+  <%= submit_tag "Save Changes" %>
+  <%= link_to 'Back', proteus_path %>
+<% end %>

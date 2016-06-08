@@ -1,0 +1,122 @@
+<% if @proteus.errors.any? %>
+<div id="errorExplanation">
+  <h3><%= pluralize(@proteus.errors.count, "error") %> prohibited this post from being saved:</h3>
+  <ul>
+    <% @proteus.errors.full_messages.each do |msg| %>
+    <li><%= msg %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<% if @proteus.new_record? || @proteus.proteus_status.description == "Draft" || @proteus.proteus_status.description == "Rejected" %>
+	<div id="proteus_submission_fields">
+  		<p><%= f.select :proteus_status_id, @allowed_statuses.collect{|s| [s.description, s.id]}.sort, :required => true %></p>
+  		<p><%= f.select :change_owner_id, @proteus.project.assignable_users.collect {|u| [u.name, u.id]}, :include_blank => true, :required => true %></p>
+  		<p><%= f.select :proteus_priority_id, @priority.collect {|p| [p.description, p.id]}, :include_blank => true, :required => true %></p>
+  		<p><%= f.text_field :summary, :size => 80, :required => true, :maxlength => 255 %></p>
+  		<p><%= f.text_area :detail,
+        	               :cols => 60,
+                               :rows => (@proteus.detail.blank? ? 10 : [[10, @proteus.detail.length / 50].max, 100].min),
+              		       :accesskey => accesskey(:edit),
+                               :class => 'wiki-edit',
+                               :required => true %></p>
+                <p><%= f.text_field :ticket_references, :size => 80, :maxlength => 255 %></p>
+  		<p><%= f.text_field :services_affected, :size => 80, :required => true, :maxlength => 255 %></p>
+                <p><%= f.text_field :servers_affected, :size => 80, :required => true, :maxlength => 255 %></p>
+  		<p><%= f.text_area :risks,
+        	               :cols => 60,
+              		       :rows => (@proteus.risks.blank? ? 10 : [[10, @proteus.risks.length / 50].max, 100].min),
+        	               :accesskey => accesskey(:edit),
+              		       :class => 'wiki-edit',
+                               :required => true %></p>
+  		<p><%= f.text_area :backout_strategy,
+        	               :cols => 60,
+              		       :rows => (@proteus.backout_strategy.blank? ? 10 : [[10, @proteus.backout_strategy.length / 50].max, 100].min),
+        	               :accesskey => accesskey(:edit),
+              		       :class => 'wiki-edit',
+                               :required => true %></p>
+  		<p><%= f.text_area :reversion_procedure,
+        	               :cols => 60,
+              		       :rows => (@proteus.reversion_procedure.blank? ? 10 : [[10, @proteus.reversion_procedure.length / 50].max, 100].min),
+              		       :accesskey => accesskey(:edit),
+              		       :class => 'wiki-edit',
+              		       :required => true %></p>
+  		<p><%= f.text_field :predicted_start_date, :size => 10, :required => true, :maxlength => 10 %><%= calendar_for('proteus_predicted_start_date')%> <%= f.time_select :predicted_start_time, {:minute_step => 15} %> </p>
+  		<p><%= f.text_field :predicted_finish_date, :size => 10, :required => true, :maxlength => 10 %><%= calendar_for('proteus_predicted_finish_date')%> <%= f.time_select :predicted_finish_time, {:minute_step => 15} %> </p>
+  		<p id="resources_form"><label>Who do you need?</label>
+    		<% @proteus.project.users.sort.each do |user| %>
+      			<label class="floating"><%= check_box_tag 'proteus[resource_ids][]', user.id, @proteus.resources.include?(user) %> <%=h user %></label>
+    		<% end %>
+   		</p>
+	</div>
+
+  <div id="hidden_resources" style="display:none;">
+    <p id="reviewers_form"><label>Review Team</label>
+    <% @proteus.project.users.sort.each do |user| %>
+      <label class="floating"><%= check_box_tag 'proteus[reviewer_ids][]', user.id, @proteus.reviewers.include?(user) %> <%=h user %></label>
+    <% end %>
+    </p>
+  </div>
+<% end %>
+
+<% if @proteus.proteus_status.description == "Submitted" %>
+
+  <div id="proteus_review_fields">
+    <p><%= f.select :proteus_status_id, @allowed_statuses.collect{|s| [s.description, s.id]}.sort, :required => true %></p>
+    <p><%= f.select :decision_owner_id, @proteus.project.assignable_users.collect {|d| [d.name, d.id]}, :include_blank => true, :required => true %></p>
+    <p id="reviewers_form"><label>Review Team</label>
+    <% @proteus.project.users.sort.each do |user| %>
+      <label class="floating"><%= check_box_tag 'proteus[reviewer_ids][]', user.id, @proteus.reviewers.include?(user) %> <%=h user %></label>
+    <% end %></p>
+    <p><%= f.text_area :review_notes,
+        	               :cols => 60,
+              		       :rows => (@proteus.review_notes.blank? ? 10 : [[10, @proteus.review_notes.length / 50].max, 100].min),
+              		       :accesskey => accesskey(:edit),
+              		       :class => 'wiki-edit' %></p>
+  </div>
+
+  <div id="hidden_resources" style="display:none;">
+    <p id="resources_form"><label>Who do you need?</label>
+    <% @proteus.project.users.sort.each do |user| %>
+      <label class="floating"><%= check_box_tag 'proteus[resource_ids][]', user.id, @proteus.resources.include?(user) %> <%=h user %></label>
+    <% end %>
+    </p>
+  </div>
+
+<% end %>
+
+<% if @proteus.proteus_status.description == "Accepted" %>
+
+  <div id="proteus_completion_fields">
+    <p><%= f.select :proteus_status_id, @allowed_statuses.collect{|s| [s.description, s.id]}.sort, :required => true %></p>
+    <p><%= f.text_field :actual_start_date, :size => 10, :required => true, :maxlength => 10 %><%= calendar_for('proteus_actual_start_date')%> <%= f.time_select :actual_start_time, {:minute_step => 5} %> </p>
+    <p><%= f.text_field :actual_finish_date, :size => 10, :required => true, :maxlength => 10 %><%= calendar_for('proteus_actual_finish_date')%> <%= f.time_select :actual_finish_time, {:minute_step => 5} %> </p>
+    <p><%= f.text_area :completion_notes,
+        	               :cols => 60,
+              		       :rows => (@proteus.completion_notes.blank? ? 10 : [[10, @proteus.completion_notes.length / 50].max, 100].min),
+              		       :accesskey => accesskey(:edit),
+              		       :class => 'wiki-edit' %></p>
+  </div>
+
+  <div id="hidden_resources" style="display:none;">
+    <p id="resources_form"><label>Who do you need?</label>
+    <% @proteus.project.users.sort.each do |user| %>
+      <label class="floating"><%= check_box_tag 'proteus[resource_ids][]', user.id, @proteus.resources.include?(user) %> <%=h user %></label>
+    <% end %>
+    </p>
+    <p id="reviewers_form"><label>Review Team</label>
+    <% @proteus.project.users.sort.each do |user| %>
+      <label class="floating"><%= check_box_tag 'proteus[reviewer_ids][]', user.id, @proteus.reviewers.include?(user) %> <%=h user %></label>
+    <% end %>
+    </p>
+  </div>
+
+<% end %>
+
+<%= wikitoolbar_for 'proteus_detail' %>
+<%= wikitoolbar_for 'proteus_risks' %>
+<%= wikitoolbar_for 'proteus_backout_strategy' %>
+<%= wikitoolbar_for 'proteus_reversion_procedure' %>
+<%= wikitoolbar_for 'proteus_review_notes' %>
+<%= wikitoolbar_for 'proteus_completion_notes' %>

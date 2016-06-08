@@ -1,0 +1,18 @@
+tr.proteus {text-align: center; white-space: nowrap;}
+tr.proteus td.summary {text-align: left; font-style: normal}
+
+.halign {float: left; width: 28em; padding-left: 6em; margin-bottom: 1em;}
+
+table caption {text-align: left; font-weight: bold; margin-bottom: .25em;}
+
+table.proteus_basics {padding-left: 8em;}
+table.proteus_basics th {vertical-align: top; text-align: left;}
+table.proteus_basics td {vertical-align: top;}
+
+table.proteus_specifics {padding-left: 4em;}
+table.proteus_specifics th {vertical-align: top; text-align: left;}
+table.proteus_specifics td {vertical-align: top; padding-left: 2em;}
+
+div.change_details {background:#ffffdd; padding:6px; margin-bottom:6px;border: 1px solid #d7d7d7;}
+
+div.wiki p {padding-left: 4em;}

@@ -1,0 +1,57 @@
+<% content_for :header_tags do %>
+    <%= stylesheet_link_tag 'proteus', :plugin => 'redmine_proteus' %>
+<% end %>
+
+<div class="contextual">
+  <%= link_to 'New Change Request', new_project_proteu_path(:project_id => @project), :class => 'icon icon-add' %>
+</div>
+
+<h2>Change Requests</h2>
+
+<% if @total == 0 %>
+  <p>No items found...</p>
+<% else %>
+<div class="autoscroll">
+  <table class="list requests">
+    <thead>
+      <tr>
+        <%= sort_header_tag('id', :caption => '#', :default_order => 'desc') %>
+        <%= sort_header_tag('project', :caption => 'Project') %>
+        <%= sort_header_tag('summary', :caption => 'Summary') %>
+        <%= sort_header_tag('submission_date', :caption => 'Submission Date') %>
+        <%= sort_header_tag('proteus_statuses.description', :caption => 'Status') %>
+        <%= sort_header_tag('owner', :caption => 'Owner') %>
+        <%= sort_header_tag('proteus_priorities.description', :caption => 'Priority') %>
+        <%= sort_header_tag('predicted_start_date', :caption => 'Expected Start') %>
+        <%= sort_header_tag('predicted_finish_date', :caption => 'Expected Finish') %>
+        <%= sort_header_tag('actual_start_date', :caption => 'Actual Start') %>
+        <%= sort_header_tag('actual_finish_date', :caption => 'Actual Finish') %>
+      </tr>
+    </thead>
+
+    <% @proteus.each do |proteus| %>
+    <tr id="proteus-<%= proteus.id %>" class="proteus">
+      <td class="id"><%= link_to proteus.id, :controller => 'proteus', :action => 'show', :id => proteus %></td>
+      <td class="project"><%= link_to proteus.project.name, :controller => 'projects', :action => 'show', :id => proteus.project_id %></td>
+      <td class="summary"><%= link_to proteus.summary, :controller => 'proteus', :action => 'show', :id => proteus %></td>
+      <td class="submission_date"><%= format_date(proteus.submission_date) %></td>
+      <td class="status"><%= proteus.proteus_status.description %></td>
+      <td class="owner"><%= link_to proteus.change_owner.name, :controller => 'users', :action => 'show', :id => proteus.change_owner %></td>
+      <td class="priority"><%= proteus.proteus_priority.description %></td>
+      <td class="predicted_start_date"><%= format_date(proteus.predicted_start_date) %></td>
+      <td class="predicted_finish_date"><%= format_date(proteus.predicted_finish_date) %></td>
+      <td class="actual_start_date"><%= format_date(proteus.actual_start_date) %></td>
+      <td class="actual_finish_date"><%= format_date(proteus.actual_finish_date) %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<p class="pagination"><%= pagination_links_full @proteus_pages, @total %></p>
+
+<% end %>
+
+<% other_formats_links do |f| %>
+  <%#= f.link_to 'Atom', :url => params.merge(:key => User.current.rss_key) %>
+  <%= f.link_to 'CSV', :url => params %>
+  <%#= f.link_to 'PDF', :url => params %>
+<% end %>

@@ -51,8 +51,6 @@ class ProteusController < ApplicationController
     @proteus = Proteus.new(proteus_params)
     @proteus.project_id = @project.id
 
-byebug
-
     respond_to do |format|
       if @proteus.save
         format.html { redirect_to(:action => 'show', :id => @proteus, :notice => 'Change Request was successfully created.') }
@@ -65,7 +63,6 @@ byebug
   end
 
   def show
-
     respond_to do |format|
       format.html
       format.json { render :json => @proteus }
@@ -82,7 +79,7 @@ byebug
     params[:proteus][:reviewer_ids] ||= []
 
     respond_to do |format|
-      if @proteus.update_attributes(params[:proteus])
+      if @proteus.update_attributes(proteus_params)
         format.html { redirect_to(:action => 'show', :id => @proteus, :notice => 'Change Request was successfully updated.') }
         format.json { render :json => {}, :status => ok }
       else
@@ -104,7 +101,7 @@ byebug
 private
 
   def find_change
-    @proteus = Proteus.find(params[:id], :include => [:project])
+    @proteus = Proteus.find(params[:id])
     @project = @proteus.project
     @allowed_statuses = @proteus.allowed_statuses
     @priority = ProteusPriority.all
@@ -124,7 +121,7 @@ private
       @proteus = Proteus.new
       @proteus.project = @project
     else
-      @proteus = Proteus.new(params[:proteus])
+      @proteus = Proteus.new(proteus_params)
     end
 
     @proteus.project = @project

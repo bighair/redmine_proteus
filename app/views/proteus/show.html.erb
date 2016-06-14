@@ -93,16 +93,16 @@
         <th class="ticket_references">Ticket References:</th><td class="ticket_references"><%= @proteus.ticket_references %></td>
       </tr>
       <tr>
-        <th class="who">Who's Required:</th><td class="who"><%= @proteus.resources.map.join(", ") %></td>
+        <th class="who">Who's Required:</th><td class="who"><%= @proteus.resources.map{|u| [u.name]}.join(", ") %></td>
       </tr>
       <tr>
-        <th class="review_team">Review Team:</th><td class="review_team"><%= @proteus.reviewers.map.join(", ") %></td>
+        <th class="review_team">Review Team:</th><td class="review_team"><%= @proteus.reviewers.map{|u| [u.name]}.join(", ") %></td>
       </tr>
     </tbody>
   </table>
 
   <hr/>
-  
+
   <p><strong>Detail</strong></p>
   <div class="wiki">
     <%= textilizable @proteus, :detail %>

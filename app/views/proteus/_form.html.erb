@@ -11,7 +11,7 @@
 
 <% if @proteus.new_record? || @proteus.proteus_status.description == "Draft" || @proteus.proteus_status.description == "Rejected" %>
 	<div id="proteus_submission_fields">
-  		<p><%= f.select :proteus_status_id, @allowed_statuses.collect{|s| [s.description, s.id]}.sort, :required => true %></p>
+      <p><%= f.select :proteus_status_id, @allowed_statuses.collect{|s| [s.description, s.id]}.sort, :required => true %></p>
   		<p><%= f.select :change_owner_id, @proteus.project.assignable_users.collect {|u| [u.name, u.id]}, :include_blank => true, :required => true %></p>
   		<p><%= f.select :proteus_priority_id, @priority.collect {|p| [p.description, p.id]}, :include_blank => true, :required => true %></p>
   		<p><%= f.text_field :summary, :size => 80, :required => true, :maxlength => 255 %></p>

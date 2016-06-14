@@ -23,10 +23,9 @@ module UserProteusPatch
   end
 
   module InstanceMethods
-    
+
   end
 end
 
-# Add module to Project
+# Add module to User
 User.send(:include, UserProteusPatch)
-

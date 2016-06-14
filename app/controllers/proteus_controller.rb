@@ -29,11 +29,7 @@ class ProteusController < ApplicationController
 
     @total = Proteus.count
     @proteus_pages = Paginator.new @total, @limit, params['page']
-    @proteus = Proteus.find(:all,
-                             :include => [:change_owner, :proteus_status, :proteus_priority, :project],
-                             :order => sort_clause,
-                             :offset => @offset,
-                             :limit => @limit)
+    @proteus = Proteus.all.includes(:change_owner, :proteus_status, :proteus_priority, :project).order(sort_clause).offset(@offset).limit(@limit)
 
     respond_to do |format|
       format.html
@@ -52,8 +48,10 @@ class ProteusController < ApplicationController
   end
 
   def create
-    @proteus = Proteus.new(params[:proteus])
+    @proteus = Proteus.new(proteus_params)
     @proteus.project_id = @project.id
+
+byebug
 
     respond_to do |format|
       if @proteus.save
@@ -137,4 +135,7 @@ private
     @project = Project.find(params[:project_id])
   end
 
+  def proteus_params
+    params.require(:proteus).permit(:id, :submission_date, :proteus_status_id, :change_owner_id, :proteus_priority_id, :summary, :detail, :ticket_references, :services_affected, :servers_affected, :risks, :backout_strategy, :reversion_procedure, :predicted_start_date, :predicted_start_time, :predicted_finish_date, :predicted_finish_time, :decision_owner_id, :review_notes, :actual_start_date, :actual_start_time, :actual_finish_date, :actual_finish_time, :completion_notes, :created_on, :updated_on, :project_id, :accepted_date, :rejected_date, :success_date, :failure_date)
+  end
 end

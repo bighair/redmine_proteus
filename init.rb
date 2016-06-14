@@ -1,4 +1,5 @@
 require 'redmine'
+require 'byebug'
 
 require_dependency 'principal'
 require_dependency 'user_proteus_patch'
@@ -19,6 +20,6 @@ Redmine::Plugin.register :redmine_proteus do
     permission :edit_proteus, {:proteus => [:edit, :update]}
     permission :delete_proteus, :proteus => :destroy
   end
-  
+
   menu :project_menu, :proteus, { :controller => 'proteus', :action => 'index' }, :caption => 'Change Control', :after => :activity, :param => :project_id
 end

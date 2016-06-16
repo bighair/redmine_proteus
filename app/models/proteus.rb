@@ -14,13 +14,14 @@ class Proteus < ActiveRecord::Base
                         :services_affected, :servers_affected, :risks, :backout_strategy,
                         :reversion_procedure, :predicted_start_date, :predicted_start_time,
                         :predicted_finish_date, :predicted_finish_time
-                        
+
   before_save :set_submission_date, :set_accepted_date, :set_rejected_date, :set_success_date, :set_failure_date
-  
+
   def allowed_statuses
     if proteus_status.nil?
       self.proteus_status_id = 1
     end
+
     statuses = proteus_status.find_allowed_statuses
     statuses << proteus_status unless statuses.empty?
   end
@@ -38,7 +39,7 @@ class Proteus < ActiveRecord::Base
       "actual_start_date" => "actual_start_date",
       "actual_finish_date" => "actual_finish_date"}
   end
-  
+
   protected
   def set_submission_date
     if submission_date.nil?

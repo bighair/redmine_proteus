@@ -4,14 +4,14 @@
 
 <h2>New Change Request</h2>
 
-<% labelled_tabular_form_for :proteus, @proteus,
+<%= labelled_form_for :proteus, @proteus,
                              :url => {:action => 'create', :project_id => @project},
-                             :html => {:multipart => true, 
+                             :html => {:multipart => true,
                                        :id => 'proteus-form',
                                        :class => 'tabular new-proteus-form'} do |f| %>
   <div class="box">
     <%= render :partial => 'proteus/form', :locals => {:f => f} %>
   </div>
   <%= submit_tag "Create" %>
-  <%= link_to 'Back', proteus_path %>
+  <%= link_to 'Back', project_proteus_path %>
 <% end %>

@@ -29,11 +29,7 @@ class ProteusController < ApplicationController
 
     @total = Proteus.count
     @proteus_pages = Paginator.new @total, @limit, params['page']
-    @proteus = Proteus.find(:all,
-                             :include => [:change_owner, :proteus_status, :proteus_priority, :project],
-                             :order => sort_clause,
-                             :offset => @offset,
-                             :limit => @limit)
+    @proteus = Proteus.all.includes(:change_owner, :proteus_status, :proteus_priority, :project).order(sort_clause).offset(@offset).limit(@limit)
 
     respond_to do |format|
       format.html
@@ -52,7 +48,7 @@ class ProteusController < ApplicationController
   end
 
   def create
-    @proteus = Proteus.new(params[:proteus])
+    @proteus = Proteus.new(proteus_params)
     @proteus.project_id = @project.id
 
     respond_to do |format|
@@ -67,7 +63,6 @@ class ProteusController < ApplicationController
   end
 
   def show
-
     respond_to do |format|
       format.html
       format.json { render :json => @proteus }
@@ -84,7 +79,7 @@ class ProteusController < ApplicationController
     params[:proteus][:reviewer_ids] ||= []
 
     respond_to do |format|
-      if @proteus.update_attributes(params[:proteus])
+      if @proteus.update_attributes(proteus_params)
         format.html { redirect_to(:action => 'show', :id => @proteus, :notice => 'Change Request was successfully updated.') }
         format.json { render :json => {}, :status => ok }
       else
@@ -106,7 +101,7 @@ class ProteusController < ApplicationController
 private
 
   def find_change
-    @proteus = Proteus.find(params[:id], :include => [:project])
+    @proteus = Proteus.find(params[:id])
     @project = @proteus.project
     @allowed_statuses = @proteus.allowed_statuses
     @priority = ProteusPriority.all
@@ -126,7 +121,7 @@ private
       @proteus = Proteus.new
       @proteus.project = @project
     else
-      @proteus = Proteus.new(params[:proteus])
+      @proteus = Proteus.new(proteus_params)
     end
 
     @proteus.project = @project
@@ -137,4 +132,7 @@ private
     @project = Project.find(params[:project_id])
   end
 
+  def proteus_params
+    params.require(:proteus).permit(:id, :submission_date, :proteus_status_id, :change_owner_id, :proteus_priority_id, :summary, :detail, :ticket_references, :services_affected, :servers_affected, :risks, :backout_strategy, :reversion_procedure, :predicted_start_date, :predicted_start_time, :predicted_finish_date, :predicted_finish_time, :decision_owner_id, :review_notes, :actual_start_date, :actual_start_time, :actual_finish_date, :actual_finish_time, :completion_notes, :created_on, :updated_on, :project_id, :accepted_date, :rejected_date, :success_date, :failure_date, resource_ids:[], reviewer_ids:[])
+  end
 end

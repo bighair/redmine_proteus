@@ -1,5 +1,5 @@
 require 'redmine'
-require 'byebug'
+require 'iconv'
 
 require_dependency 'principal'
 require_dependency 'user_proteus_patch'

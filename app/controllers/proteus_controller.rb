@@ -133,6 +133,6 @@ private
   end
 
   def proteus_params
-    params.require(:proteus).permit(:id, :submission_date, :proteus_status_id, :change_owner_id, :proteus_priority_id, :summary, :detail, :ticket_references, :services_affected, :servers_affected, :risks, :backout_strategy, :reversion_procedure, :predicted_start_date, :predicted_start_time, :predicted_finish_date, :predicted_finish_time, :decision_owner_id, :review_notes, :actual_start_date, :actual_start_time, :actual_finish_date, :actual_finish_time, :completion_notes, :created_on, :updated_on, :project_id, :accepted_date, :rejected_date, :success_date, :failure_date)
+    params.require(:proteus).permit(:id, :submission_date, :proteus_status_id, :change_owner_id, :proteus_priority_id, :summary, :detail, :ticket_references, :services_affected, :servers_affected, :risks, :backout_strategy, :reversion_procedure, :predicted_start_date, :predicted_start_time, :predicted_finish_date, :predicted_finish_time, :decision_owner_id, :review_notes, :actual_start_date, :actual_start_time, :actual_finish_date, :actual_finish_time, :completion_notes, :created_on, :updated_on, :project_id, :accepted_date, :rejected_date, :success_date, :failure_date, resource_ids:[], reviewer_ids:[])
   end
 end

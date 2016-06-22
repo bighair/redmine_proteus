@@ -29,13 +29,14 @@ class ProteusController < ApplicationController
 
     @total = Proteus.count
     @proteus_pages = Paginator.new @total, @limit, params['page']
+    @offset ||= @proteus_pages.offset
     @proteus = Proteus.all.includes(:change_owner, :proteus_status, :proteus_priority, :project).order(sort_clause).offset(@offset).limit(@limit)
 
     respond_to do |format|
       format.html
       format.json { render :json => @proteus }
       format.atom { render_feed(@proteus, :title => "Change Control Feed") }
-      format.csv  { send_data(proteus_to_csv(@proteus), :type => 'text/csv; header=present', :filename => 'export.csv') }
+      format.csv  { send_data(proteus_to_csv(@proteus), :type => 'text/csv; header=present', :filename => 'changes.csv') }
       format.pdf  { send_data(issues_to_pdf(@proteus), :type => 'application/pdf', :filename => 'export.pdf') }
     end
   end

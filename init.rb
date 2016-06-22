@@ -1,5 +1,4 @@
 require 'redmine'
-require 'iconv'
 
 require_dependency 'principal'
 require_dependency 'user_proteus_patch'
@@ -11,7 +10,7 @@ Redmine::Plugin.register :redmine_proteus do
   name 'Redmine Proteus plugin'
   author 'Matt Roberts'
   description 'This plugin for Redmine provides a Request For Change (RFC) template and repository to facilitate a CAB process as detailed in the ITIL framework'
-  version '0.0.1'
+  version '2.0.1'
 
   project_module :proteus_module do
     permission :index_proteus, :proteus => :index
